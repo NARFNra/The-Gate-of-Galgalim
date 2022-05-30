@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/unlimit.ogg-180f75b48f1facff605113caa161f3c7.oggstr"
+
+[deps]
+
+source_file="res://audio/unlimit.ogg"
+dest_files=[ "res://.import/unlimit.ogg-180f75b48f1facff605113caa161f3c7.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
