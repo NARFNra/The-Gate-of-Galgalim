@@ -47,6 +47,9 @@ var dead = false
 var deathCirc = 0
 var circAlpha = 0
 
+#hard mode setting is 30
+var invincTime = 60#30
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	lives = pvars.playerLives
@@ -187,7 +190,7 @@ func take_damage(damage):
 			else:
 				Audsys.play_sfx(\"damage.wav\")#\"shick.wav\", -9.0)
 				knockback = 5
-				damageTimer = 30
+				damageTimer = invincTime#30
 		pvars.playerHP = hp
 	pass
 	

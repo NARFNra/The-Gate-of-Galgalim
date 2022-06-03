@@ -110,7 +110,8 @@ func set_groups(addOrRemove, groups=[]):
 
 func set_visib_range():
 	if has_node("VisibilityNotifier2D"):
-		myVisib.rect = Rect2(Vector2(-dispLeaveRange, -dispLeaveRange), Vector2(dispLeaveRange * 2, dispLeaveRange * 2))
+		#instead of setting it, add the range to the edges? or ignore
+		#myVisib.rect = Rect2(Vector2(-dispLeaveRange, -dispLeaveRange), Vector2(dispLeaveRange * 2, dispLeaveRange * 2))
 		myVisib.connect("screen_exited", self, "leave_screen")
 		myVisib.connect("screen_entered", self, "enter_screen")
 		pass
@@ -185,6 +186,8 @@ func die():
 	dead = true
 	set_groups("remove", ["damagable", "damaging"])
 	yspeed = -3
+	hasGrav = true
+	myGrav = 0.5
 	#dead objects lose all collision
 	mySprite.material = deadMat
 	collision_layer = 0b0000

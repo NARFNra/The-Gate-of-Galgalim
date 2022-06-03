@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=2]
+[gd_scene load_steps=67 format=2]
 
 [ext_resource path="res://scenes/levels/Node2D.gd" type="Script" id=1]
 [ext_resource path="res://scenes/Protagonist.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://scenes/DefaultCamera.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/DillerSpawner.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/enemies/LeechEnemy.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/enemies/BeamerSpawner.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/bosses/Miniboss1Beetle.tscn" type="PackedScene" id=10]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
@@ -658,7 +659,7 @@ tile_data = PoolIntArray( 0, 0, 196609, 1, 0, 0, 44, 0, 196609, 45, 0, 0, 65536,
 position = Vector2( 539, 255 )
 
 [node name="KinematicBody2D" parent="." instance=ExtResource( 2 )]
-position = Vector2( 998, 778 )
+position = Vector2( 188, 333 )
 
 [node name="EnemySpawner2" parent="." instance=ExtResource( 7 )]
 position = Vector2( 863, 219 )
@@ -671,3 +672,6 @@ position = Vector2( 1325, 515 )
 
 [node name="Enemy2" parent="." instance=ExtResource( 10 )]
 position = Vector2( 658, 597 )
+
+[node name="BeamerSpawner" parent="." instance=ExtResource( 9 )]
+position = Vector2( 146, 587 )

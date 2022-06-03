@@ -48,6 +48,7 @@ func generate_walls():
 func die():
 	.die()
 	get_tree().call_group("minibeetledoors", "demanifest")
+	Audsys.play_sfx("steam.wav", -5, 1.0, 1)
 	
 	#later have a real cutscene
 	#however
@@ -60,8 +61,10 @@ func take_damage(damage):
 	if hp > 5:
 		if hp < 9:
 			accelSpeed = 0.2
-	else:
-		accelSpeed = 0.3
+			
+	#for hard mode
+	#else:
+	#	accelSpeed = 0.3
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -79,7 +82,7 @@ func _process(delta):
 	match phase:
 		0:
 			#intro, lurking in room
-			if (pvars.playerX < (myRoomPoint.x + 400)):
+			if (pvars.playerX < (myRoomPoint.x + 400) && pvars.playerX > (myRoomPoint.x)):
 				if (pvars.playerY > myRoomPoint.y) && (pvars.playerY < myRoomPoint.y + 448):
 					Audsys.fade_out_mus(1.0)
 					position.x = myRoomPoint.x - 48
