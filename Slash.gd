@@ -2,6 +2,11 @@ extends Sprite
 
 
 var myTimer = 0
+
+#easy = 3
+#normal = 2
+#hard = 1
+var rangeMod = 3
 #var myHost = null
 #myhost will be set by the protag and used to lock it to protag's body
 
@@ -22,9 +27,9 @@ func _process(delta):
 	
 func _physics_process(delta):
 	if flip_h == false:
-		position.x += 1.5
+		position.x += 1.5 * rangeMod
 	else:
-		position.x -= 1.5
+		position.x -= 1.5 * rangeMod
 		
 	#foolish me, forgetting that godot handles that automatically
 	#if myHost != null:

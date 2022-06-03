@@ -265,7 +265,7 @@ func play_sfx(sfx, volume=0.0, pitch=1.0, force=false):
 		#print("channel 1 open")
 		
 	#use normal open channel check, but if force is on, then just override channel 1
-	if force == true:
+	if bool(force) == true:
 		if openChannel == null:
 			openChannel = $sfxch1
 			openChannelArrayNum = 0
@@ -281,7 +281,7 @@ func play_sfx(sfx, volume=0.0, pitch=1.0, force=false):
 		#if it's already playing, don't add it
 		#unless forced
 		var alreadyPlaying = false
-		if force == false:
+		if bool(force) == false:
 			var i
 			i = 6
 			while i > -1:

@@ -5,6 +5,11 @@ var playerY = 666666
 var playerHP = 5
 var playerLives = 3
 
+#2 = hard
+#1 = normal
+#0 = easy
+var difficulty = 2
+
 var cameraPosX = 666666
 var cameraPosY = 666666
 
