@@ -1,7 +1,0 @@
-[gd_scene format=2]
-
-[node name="audioengine" type="Node2D"]
-
-[node name="sfx" type="AudioStreamPlayer" parent="."]
-
-[node name="music" type="AudioStreamPlayer" parent="."]
