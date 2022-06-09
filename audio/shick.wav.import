@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/shick.wav-da671cf55f8fa451081cb95bdc6ffcab.sample"
+
+[deps]
+
+source_file="res://audio/shick.wav"
+dest_files=[ "res://.import/shick.wav-da671cf55f8fa451081cb95bdc6ffcab.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

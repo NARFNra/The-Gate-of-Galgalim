@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/pow.wav-a0e0ce419f6f3f344604cb076c1d0386.sample"
+
+[deps]
+
+source_file="res://audio/pow.wav"
+dest_files=[ "res://.import/pow.wav-a0e0ce419f6f3f344604cb076c1d0386.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
