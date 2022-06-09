@@ -8,7 +8,7 @@ extends "EnemySpawner.gd"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	myEnemy = load("res://scenes/enemies/beamer.tscn")
+	myEnemy = load("res://scenes/enemies/Diller.tscn")
 	pass # Replace with function body.
 
 

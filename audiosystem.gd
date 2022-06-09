@@ -186,7 +186,7 @@ func play_mus(song, volume=0.0, pitch=1.0, force=false):
 			var i
 			i = 2
 			while i > -1:
-				print("channel " + str(musChs[i]) + " currently playing: " + str(musChs[i][1]))
+				#print("channel " + str(musChs[i]) + " currently playing: " + str(musChs[i][1]))
 				if musChs[i][1] == song:
 					alreadyPlaying = true
 					#print("already playing, don't double play")

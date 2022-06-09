@@ -2,6 +2,12 @@ extends Node
 
 var newScene
 var resetScene = "example"
+var optionsOn = false
+var lDArray
+
+# was gonna load options but actually ill just
+# like, have them hidden
+#var optionsMenu = preload("res://scenes/OptionsMenu.tscn")
 
 func _ready():
 	$Menu/VBoxContainer/Start.grab_focus()
@@ -33,8 +39,9 @@ func _deferred_change_scene(targscene):
 
 func _deferred_change_level(lvnum):
 	var targlevel
-	if lvnum == 1:
-		targlevel = "res://scenes/levels/Level1.tscn"
+	#use roomdata array
+	lDArray = RoomData.levelData
+	targlevel = lDArray[RoomData.currentLevel][2]
 	_deferred_change_scene(targlevel)
 	resetScene = targlevel # only saving this for levels
 	RoomData.currentLevel = lvnum
@@ -42,4 +49,25 @@ func _deferred_change_level(lvnum):
 	
 func reset_scene():
 	_deferred_change_scene(resetScene)
+	pass
+
+func spawn_options_menu():
+	# flip bool
+	optionsOn = not optionsOn
+	# if true, it WAS false
+	if optionsOn == true:
+		#var newOptions = 
+		if is_instance_valid($optnmenu):
+			$optnmenu.show()
+			#grabs focus for option button
+			$optnmenu.grab_from_menu()
+		else:
+			print("CAN'T FIND OPTIONS MENU TO SHOW")
+	else: # options menu was on
+		#var newOptions = 
+		if is_instance_valid($optnmenu):
+			$optnmenu.hide()
+			$Menu/VBoxContainer/Start.grab_focus()
+		else:
+			print("CAN'T FIND OPTIONS MENU TO HIDE")
 	pass

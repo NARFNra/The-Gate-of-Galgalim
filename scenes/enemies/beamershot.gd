@@ -1,4 +1,4 @@
-extends "../Enemy.gd"
+extends "Enemy.gd"
 
 var frame = 0
 var phaseTimer = 0

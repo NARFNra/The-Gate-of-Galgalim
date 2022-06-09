@@ -4,7 +4,7 @@ extends Control
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-
+onready var genman = get_node("/root/GM")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -22,11 +22,11 @@ func _on_Quit_pressed():
 
 
 func _on_Options_pressed():
+	genman.spawn_options_menu()
 	pass # Replace with function body.
 
 
 func _on_Start_pressed():
-	var genman = get_node("/root/GM")
 	genman.lets_start_level(1)
 	#just gonna do this as an experiment
 	pvars.playerLives = 3

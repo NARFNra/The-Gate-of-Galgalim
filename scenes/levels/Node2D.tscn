@@ -4,12 +4,12 @@
 [ext_resource path="res://scenes/Protagonist.tscn" type="PackedScene" id=2]
 [ext_resource path="res://newtileset2-importable.png" type="Texture" id=3]
 [ext_resource path="res://newtileset.png" type="Texture" id=4]
-[ext_resource path="res://scenes/EnemySpawner.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/enemies/EnemySpawner.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/DefaultCamera.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/DillerSpawner.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/enemies/DillerSpawner.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/enemies/LeechEnemy.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/enemies/BeamerSpawner.tscn" type="PackedScene" id=9]
-[ext_resource path="res://scenes/bosses/Miniboss1Beetle.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/enemies/bosses/Miniboss1Beetle.tscn" type="PackedScene" id=10]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )

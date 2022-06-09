@@ -1,14 +1,10 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://art/protagonista.png" type="Texture" id=1]
+[ext_resource path="res://art/protagonist2.png" type="Texture" id=1]
 
 [sub_resource type="GDScript" id=56]
 script/source = "extends KinematicBody2D
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = \"text\"
 var myGrav = 0.5
 var isJump = false
 var yspeed = 0
@@ -19,24 +15,31 @@ var knockback = 0
 var xMove
 var yMove
 
-var lastXMove
-var xMoveMomentum
+var imCrouching = false
+
+#var lastXMove
+#var xMoveMomentum
 
 var upDir = Vector2(0, -1)
 
 #attack
 var slashes = load(\"res://scenes/Slash.tscn\")
 var slashCool = 0
+#set by diff
+var slashRngMod = 3
 
 #hp bar
 var hpbar = load(\"res://scenes/other/hpbar.tscn\")
 
 var myFacing = 1
 
-var hp = 5
-var lives = 3
+#now handled entirely by playervars
+#var hp = 5
+#var lives = 3
 var damageTimer = 0
 var damageFlash = 0
+
+var walkTimer = 0
 
 var collideArray = []
 
@@ -48,11 +51,12 @@ var deathCirc = 0
 var circAlpha = 0
 
 #hard mode setting is 30
-var invincTime = 60#30
+#reset by difficulty setter
+var invincTime = 60
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	lives = pvars.playerLives
+	#why do i have this doubled.
 	call_deferred(\"addhpbar\")
 	#dead-enemy-ally-wall
 	#only detect walls and ally objects
@@ -61,8 +65,33 @@ func _ready():
 	add_to_group(\"protagonist\") # for certain controls
 	add_to_group(\"ally\") # can be damaged by enemy
 	add_to_group(\"damagable\") # used for invincibility
+	#do i really want to do this here
+	#maybe set a delay timer for music or something...
 	RoomData.play_level_music()
+	#set stuff that changes on diff difficulties
+	set_vars_as_per_diff()
 	pass # Replace with function body.
+
+func set_vars_as_per_diff():
+	var gameDiff = pvars.difficulty
+	#0 ez 1 norm 2 hard
+	prints(\"Difficulty: \", gameDiff)
+	match gameDiff:
+		0:
+			slashRngMod = 3
+			invincTime = 60
+		1:
+			slashRngMod = 2
+			invincTime = 60
+		2:
+			slashRngMod = 1
+			invincTime = 30
+		_:
+		#defaults if borked
+			slashRngMod = 2
+			invincTime = 60
+	prints(invincTime)
+	pass
 
 func addhpbar():
 	var myHPBar = hpbar.instance()
@@ -72,17 +101,36 @@ func addhpbar():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+		
+	if walkTimer > 6:
+		$Protagonista.frame = 1
+	else:
+		$Protagonista.frame = 0
+			
+
+	if imCrouching == true:
+		$Protagonista.frame = 3
+		$CollisionShape2D.shape.extents.y = 8
+		$CollisionShape2D.position.y = 8.0
+		$hitbox/CollisionShape2D.shape.extents.y = 8
+		$hitbox/CollisionShape2D.position.y = 8.0
+	else:
+		$CollisionShape2D.shape.extents.y = 16
+		$CollisionShape2D.position.y = 0
+		$hitbox/CollisionShape2D.shape.extents.y = 16
+		$hitbox/CollisionShape2D.position.y = 0
+		pass
+	
 	if controlLock == false:
 		if slashCool > 0:
 			slashCool -= 1
 			if slashCool > 1:
-				$Protagonista.texture = load(\"res://art/protagonistaatk2.png\")
-			else:
-				$Protagonista.texture = load(\"res://art/protagonista.png\")
+				$Protagonista.frame = 2
 		else:
 			if Input.is_action_just_pressed(\"attack\"):
 				var mySlash = slashes.instance()
 				add_child(mySlash)
+				mySlash.rangeMod = slashRngMod
 				if myFacing == -1:
 					mySlash.position.x = -16
 					mySlash.flip_h = true
@@ -98,12 +146,29 @@ func _process(delta):
 	else:
 		damageFlash = 0
 		$Protagonista.set_visible(true)
-		
+	
 	if dead == true:
 		post_death_process_actions()
 	pass
-func _physics_process(delta):
 	
+func _physics_process(delta):
+	if Input.is_action_just_pressed(\"ui_accept\") or Input.is_action_just_pressed(\"ui_accept\"):
+		pvars.pause_game()
+	handle_falling()
+	#experiment
+	if imCrouching == false:
+		handle_xmove()
+	# does not exist and may not exist
+	#handle_knockback()
+	handle_jump()
+	in_enemy_check()
+	
+	pvars.playerX = position.x
+	pvars.playerY = position.y
+	
+
+
+func handle_falling():
 	#gravity acceleration, faster if holding down
 	if yspeed < 10:
 		yspeed += myGrav
@@ -123,24 +188,45 @@ func _physics_process(delta):
 	if is_on_ceiling():
 		if yspeed < 0:
 			yspeed += 3
-	
+			
+	if controlLock == false:
+		if Input.is_action_pressed(\"ui_down\"):
+			imCrouching = true
+		else:
+			imCrouching = false
+		
+
+func handle_xmove():
 	#find x move
 	if controlLock == false:
 		xMove = int(Input.is_action_pressed(\"ui_right\")) - int(Input.is_action_pressed(\"ui_left\"))
 	else:
 		xMove = 0
-	#move x
-	if knockback:
-		move_and_slide(Vector2(xMove + (knockback * -myFacing * 0.8) * 150, 0), upDir)
-		knockback -= 1
-	else:
-		move_and_slide(Vector2(xMove * 300, 0), upDir)
-	#if lastXMove != xMove:
-	#	move_and_collide(Vector2(lastXMove * xMoveMomentum, 0))
+
+	move_and_slide(Vector2(xMove * 300, 0), upDir)
+
 	if xMove != 0:
+		walkTimer += 1 # for animation
+		if walkTimer > 12:
+			walkTimer = 0
 		myFacing = xMove
 		$Protagonista.scale.x = myFacing
-	
+	else:
+		walkTimer = 0
+
+func handle_knockback():
+	#knockback is dead
+	#this code was refactored when removed
+	#if knockback:
+		#move_and_slide(Vector2(xMove + (knockback * -myFacing * 0.8) * 150, 0), upDir)
+		#knockback -= 1
+	#else:
+		#move_and_slide(Vector2(xMove * 300, 0), upDir)
+	#if lastXMove != xMove:
+	#	move_and_collide(Vector2(lastXMove * xMoveMomentum, 0))
+	pass
+
+func handle_jump():
 	#jump
 	if controlLock == false:
 		if Input.is_action_just_pressed(\"jump\"):
@@ -158,11 +244,9 @@ func _physics_process(delta):
 			#on releasing jump, slow down height
 			if yspeed < 0:
 				yspeed *= 0.5
-	
-	pvars.playerX = position.x
-	pvars.playerY = position.y
-	
-	#checking if i am sitting inside an enemy
+
+func in_enemy_check():
+		#checking if i am sitting inside an enemy
 	if damageTimer == 1:
 		collideArray = $hitbox.get_overlapping_areas()
 		
@@ -183,22 +267,20 @@ func _on_hitbox_area_entered(area):
 func take_damage(damage):
 	if is_in_group(\"damagable\"):
 		if damageTimer == 0:
-			hp -= damage
-			if hp < 1:
+			pvars.playerHP -= damage
+			if pvars.playerHP < 1:
 				Audsys.play_sfx(\"explode.wav\")#\"pow.wav\", -9.0)
 				die()
 			else:
 				Audsys.play_sfx(\"damage.wav\")#\"shick.wav\", -9.0)
 				knockback = 5
 				damageTimer = invincTime#30
-		pvars.playerHP = hp
 	pass
 	
 func die():
 	dead = true
 	controlLock = true
-	lives -= 1
-	pvars.playerLives = lives
+	pvars.playerLives -= 1
 	remove_from_group(\"damagable\")
 	Audsys.play_sfx(\"mist.wav\")
 	Audsys.fade_out_mus(3.0)
@@ -236,9 +318,9 @@ func unlock_player():
 extents = Vector2( 8, 16 )
 
 [sub_resource type="RectangleShape2D" id=74]
-extents = Vector2( 10, 17 )
+extents = Vector2( 10, 16 )
 
-[node name="KinematicBody2D" type="KinematicBody2D"]
+[node name="Protagonist" type="KinematicBody2D"]
 script = SubResource( 56 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -246,6 +328,7 @@ shape = SubResource( 55 )
 
 [node name="Protagonista" type="Sprite" parent="."]
 texture = ExtResource( 1 )
+hframes = 4
 
 [node name="hitbox" type="Area2D" parent="."]
 

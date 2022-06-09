@@ -1,4 +1,4 @@
-extends "../EnemySpawner.gd"
+extends "EnemySpawner.gd"
 
 
 # Declare member variables here. Examples:

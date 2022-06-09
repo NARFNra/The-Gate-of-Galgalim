@@ -6,13 +6,29 @@ var myTimer = 0
 #easy = 3
 #normal = 2
 #hard = 1
+#set by protag
 var rangeMod = 3
 #var myHost = null
 #myhost will be set by the protag and used to lock it to protag's body
 
 func _ready():
-	pass # Replace with function body.
-
+#	set_vars_as_per_diff()
+#	pass # Replace with function body.
+#
+#func set_vars_as_per_diff():
+#	var gameDiff = pvars.difficulty
+#	#0 ez 1 norm 2 hard
+#	match gameDiff:
+#		0:
+#			rangeMod = 3
+#		1:
+#			rangeMod = 2
+#		2:
+#			rangeMod = 1
+#		_:
+#		#defaults if borked
+#			rangeMod = 2
+	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
